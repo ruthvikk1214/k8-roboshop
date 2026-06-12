@@ -29,7 +29,7 @@ spec:
           imagePullPolicy: Always
           image: redis:7.0
           ports:
-            - containerPort: 5679
+            - containerPort: 6379
               name: redis
 ---
 apiVersion: v1
@@ -49,6 +49,6 @@ spec:
     component: redis
     tier: db
   ports:
-    - port: 5679
-      targetPort: 5679
+    - port: 6379
+      targetPort: 6379
       name: redis
