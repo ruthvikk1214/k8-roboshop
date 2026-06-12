@@ -1,9 +1,9 @@
 apiVersion: v1
-kind: configmap
+kind: ConfigMap
 metadata:
   name: catalogue
+  namespace: roboshop
   labels:
-    namespace: roboshop
     project: roboshop
     env: dev
     component: catalogue
@@ -12,8 +12,8 @@ data:
   MONGO: "true"
   MONGO_URL: "mongodb://mongodb:27017/catalogue"
 ---
-apiVersion: v1
-kind: deployment
+apiVersion: apps/v1
+kind: Deployment
 metadata:
   name: catalogue
   namespace: roboshop
@@ -46,7 +46,7 @@ spec:
                 name: catalogue
 ---
 apiVersion: v1
-kind: service
+kind: Service
 metadata:
   name: catalogue
   namespace: roboshop
@@ -62,6 +62,6 @@ spec:
     component: catalogue
     tier: backend
   ports:
-    - port: 27017
+    - port: 8080
       targetPort: 8080
       name: catalogue
