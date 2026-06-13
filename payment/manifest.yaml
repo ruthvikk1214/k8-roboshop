@@ -1,0 +1,99 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: payment
+  namespace: roboshop
+  labels:
+    project: roboshop
+    env: dev
+    component: payment
+    tier: backend
+data:
+  CART_HOST: "cart"
+  CART_PORT: "8080"
+  USER_HOST: "user"
+  USER_PORT: "8080"
+  AMQP_HOST: "rabbitmq"
+  AMQP_USER: "roboshop"
+  AMQP_PASS: "roboshop123"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: payment
+  namespace: roboshop
+  labels:
+    project: roboshop
+    env: dev
+    component: payment
+    tier: backend
+spec: 
+  replicas: 1
+  selector: 
+    matchLabels:
+      project: roboshop
+      env: dev
+      component: payment
+      tier: backend
+  template:
+    metadata:
+      labels:
+        project: roboshop
+        env: dev
+        component: payment
+        tier: backend
+    spec:
+      containers:
+        - name: payment
+          image: ruthvikk1214/payment:1.0
+          resources:
+            requests:
+              memory: "64Mi"
+              cpu: "50m"
+            limits:
+              memory: "128Mi"
+              cpu: "200m"
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8080
+            failureThreshold: 2
+            periodSeconds: 10
+            initialDelaySeconds: 5
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8080
+            failureThreshold: 2
+            periodSeconds: 10
+            initialDelaySeconds: 5
+          startupProbe:
+            httpGet:
+              path: /health
+              port: 8080
+            failureThreshold: 20
+            periodSeconds: 10
+          envFrom:
+            - configMapRef:
+                name: payment
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: payment
+  namespace: roboshop
+  labels:
+    project: roboshop
+    env: dev
+    component: payment
+    tier: backend
+spec: 
+  selector:
+    project: roboshop
+    env: dev
+    component: payment
+    tier: backend
+  ports:
+    - port: 8080
+      targetPort: 8080
+      name: payment
