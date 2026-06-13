@@ -26,7 +26,8 @@ spec:
     spec:
       containers:
         - name: mysql
-          image: ruthvikk1214/mysql:1.1
+          image: ruthvikk1214/mysql:1.2
+          imagePullPolicy: Always
           env:
             - name: MYSQL_ROOT_PASSWORD
               value: RoboShop@1
