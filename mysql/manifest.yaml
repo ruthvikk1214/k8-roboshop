@@ -1,12 +1,12 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: mongodb
+  name: mysql
   namespace: roboshop
   labels:
     project: roboshop
     env: dev
-    component: mongodb
+    component: mysql
     tier: db
 spec:
   replicas: 1
@@ -14,40 +14,40 @@ spec:
     matchLabels:
       project: roboshop
       env: dev
-      component: mongodb
+      component: mysql
       tier: db
   template:
     metadata:
       labels:
         project: roboshop
         env: dev
-        component: mongodb
+        component: mysql
         tier: db
     spec:
       containers:
-        - name: mongodb
-          image: ruthvikk1214/mongodb:1.0
+        - name: mysql
+          image: ruthvikk1214/mysql:1.0
           ports:
             - containerPort: 27017
-              name: mongodb
+              name: mysql
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: mongodb
+  name: mysql
   namespace: roboshop
   labels:
     project: roboshop
     env: dev
-    component: mongodb
+    component: mysql
     tier: db
 spec:
   selector:
     project: roboshop
     env: dev
-    component: mongodb
+    component: mysql
     tier: db
   ports:
-    - port: 27017
-      targetPort: 27017
-      name: mongodb
+    - port: 3306
+      targetPort: 3306
+      name: mysql
