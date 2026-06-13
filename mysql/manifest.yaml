@@ -27,6 +27,9 @@ spec:
       containers:
         - name: mysql
           image: ruthvikk1214/mysql:1.1
+          env:
+            - name: MYSQL_ROOT_PASSWORD
+              value: RoboShop@1
           ports:
             - containerPort: 3306
               name: mysql
