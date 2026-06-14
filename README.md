@@ -106,6 +106,7 @@ k8-roboshop/
 - Multi-container microservices deployment
 - Independent deployments for every service
 - Internal service discovery using Kubernetes Services
+- External application access via AWS LoadBalancer service mapping to the frontend
 - Configuration management using ConfigMaps
 - Health monitoring using probes
 - Resource management using CPU & Memory limits
@@ -329,25 +330,26 @@ The CloudFormation stack still existed after a failed cluster deletion.
 
 ---
 
-## 9. Kubernetes Service Discovery
+## 9. Kubernetes Service Discovery & External Access
 
-Learned how Kubernetes automatically creates DNS records.
+Learned how Kubernetes automatically manages internal service communication and external traffic:
+
+### Internal Service Discovery
+Kubernetes automatically creates DNS records for each service in the namespace, allowing applications to communicate internally using service names instead of static IP addresses.
 
 Examples:
+- `mongodb`
+- `mysql`
+- `redis`
+- `rabbitmq`
+- `cart`
+- `catalogue`
+- `user`
+- `shipping`
+- `payment`
 
-```
-mongodb
-mysql
-redis
-rabbitmq
-cart
-catalogue
-user
-shipping
-payment
-```
-
-Applications communicate internally without IP addresses.
+### External Service Access
+The application is accessed externally via the `frontend` service of type `LoadBalancer`. Kubernetes interacts with AWS EKS to automatically provision an AWS Network/Application Load Balancer (ALB/NLB), providing a public entrypoint (e.g., `ad9ad499102574bb88beac07c1c1f617-2013429044.us-east-1.elb.amazonaws.com`) to route traffic to the Nginx frontend pods.
 
 ---
 
