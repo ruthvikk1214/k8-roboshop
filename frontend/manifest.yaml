@@ -26,7 +26,7 @@ metadata:
     project: roboshop
     env: dev
     component: frontend
-    tier: backend
+    tier: frontend
 spec: 
   replicas: 1
   selector: 
@@ -34,14 +34,14 @@ spec:
       project: roboshop
       env: dev
       component: frontend
-      tier: backend
+      tier: frontend
   template:
     metadata:
       labels:
         project: roboshop
         env: dev
         component: frontend
-        tier: backend
+        tier: frontend
     spec:
       containers:
         - name: frontend
@@ -62,14 +62,14 @@ spec:
             initialDelaySeconds: 5
           livenessProbe:
             httpGet:
-              path: /health
+              path: /       # Changed from /health to avoid 404 crashes
               port: 80
             failureThreshold: 2
             periodSeconds: 10
             initialDelaySeconds: 5
           startupProbe:
             httpGet:
-              path: /health
+              path: /       # Changed from /health to avoid 404 crashes
               port: 80
             failureThreshold: 20
             periodSeconds: 10
@@ -86,14 +86,14 @@ metadata:
     project: roboshop
     env: dev
     component: frontend
-    tier: backend
+    tier: frontend
 spec: 
   type: LoadBalancer
   selector:
     project: roboshop
     env: dev
     component: frontend
-    tier: backend
+    tier: frontend
   ports:
     - port: 80
       targetPort: 80
